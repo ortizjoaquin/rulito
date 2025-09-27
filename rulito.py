@@ -44,7 +44,7 @@ BNA_FALLBACK = 1380.0
 FALLBACK_BID = 1450.0
 FALLBACK_ASK = 1450.0
 
-USD_USDT_FEE = 0.05  # Comisión global USD→USDT
+USD_USDT_FEE = 0.04  # Comisión global USD→USDT
 
 # ------------------------
 # UTILIDADES
@@ -116,6 +116,7 @@ def flujo_usd(precios):
     except:
         print("Monto inválido. Volviendo al menú.")
         return
+
     usdt_obtenidos = monto_usd * (1 - USD_USDT_FEE)
     print(f"\n[💵] {monto_usd:.2f} USD → {usdt_obtenidos:.2f} USDT (comisión {USD_USDT_FEE*100:.2f}%)")
 
@@ -128,8 +129,10 @@ def flujo_usd(precios):
     mejor = mejor_banco_ask(precios_bancos)
     usd_recomprados = ars_obtenidos / (mejor["ask"] if mejor else BNA_FALLBACK)
     print(f"\n[💰] Mejor banco para recomprar USD: {mejor['banco'].upper() if mejor else 'BNA'} a ${mejor['ask'] if mejor else BNA_FALLBACK:.2f}")
-    diff = usd_recomprados - monto_usd
-    print(f"USD iniciales: ${monto_usd:.2f} | USD recomprados: ${usd_recomprados:.2f} | Ganancia: ${diff:.2f}\n")
+
+    porcentaje = (usd_recomprados - monto_usd) / monto_usd * 100
+    resultado = "Ganancia" if porcentaje >= 0 else "Pérdida"
+    print(f"USD iniciales: {monto_usd:.2f} | USD recomprados: {usd_recomprados:.2f} | {resultado}: {porcentaje:+.2f}%\n")
 
 def flujo_usdt(precios):
     try:
@@ -137,6 +140,7 @@ def flujo_usdt(precios):
     except:
         print("Monto inválido. Volviendo al menú.")
         return
+
     venta = elegir_mejor_venta(precios)
     ars_obtenidos = monto_usdt * venta["bid_neto"]
     print(f"\n[✅] Venta USDT/ARS: {format_exchange_text(venta['exchange'], venta['bid_neto'], SELL_FEES[venta['exchange']])}")
@@ -145,8 +149,10 @@ def flujo_usdt(precios):
     compra = elegir_mejor_compra(precios)
     usdt_recomprados = ars_obtenidos / compra["ask_neto"]
     print(f"[✅] Recompra USDT: {format_exchange_text(compra['exchange'], compra['ask_neto'], BUY_FEES[compra['exchange']])}")
-    diff = usdt_recomprados - monto_usdt
-    print(f"USDT iniciales: {monto_usdt:.2f} | USDT recomprados: {usdt_recomprados:.6f} | Ganancia: {diff:.6f}\n")
+
+    porcentaje = (usdt_recomprados - monto_usdt) / monto_usdt * 100
+    resultado = "Ganancia" if porcentaje >= 0 else "Pérdida"
+    print(f"USDT iniciales: {monto_usdt:.2f} | USDT recomprados: {usdt_recomprados:.6f} | {resultado}: {porcentaje:+.2f}%\n")
 
 def flujo_ars(precios):
     try:
