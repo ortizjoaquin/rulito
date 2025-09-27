@@ -20,7 +20,7 @@ Permite evaluar la mejor opción considerando **cotizaciones actuales** y **comi
 
 - Python **3.8+**
 - Librerías:
-```bash
+bash
 pip install requests
 
 	•	Conexión a Internet para consultar precios.
@@ -28,18 +28,19 @@ pip install requests
 ⸻
 
 📦 Instalación
-	1.	Clonar el repositorio:
+
+1.	Clonar el repositorio:
 
 git clone https://github.com/ortizjoaquin/rulito.git
 cd rulito
-
-	2.	Crear un entorno virtual (opcional pero recomendado):
+	
+2.	Crear un entorno virtual (opcional pero recomendado):
 
 python3 -m venv rulito-env
 source rulito-env/bin/activate  # Linux / macOS
 rulito-env\Scripts\activate     # Windows
 
-	3.	Instalar dependencias:
+3.	Instalar dependencias:
 
 pip install -r requirements.txt
 
